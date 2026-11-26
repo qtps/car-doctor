@@ -1,0 +1,16 @@
+# Dependencies
+**/node_modules/
+
+# Environment variables (NEVER commit real secrets)
+**/.env
+**/.env*.local
+
+# Build outputs
+**/dist/
+**/.next/
+**/out/
+
+# OS & logs
+.DS_Store
+*.log
+
