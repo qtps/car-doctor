@@ -25,10 +25,10 @@ services:
       - path: ./backend/.env
         required: false
     environment:
-      MONGO_URI: mongodb://mongo:27017/car-doctor
+      MONGO_HOST: mongo
       PORT: 5000
       FRONTEND_URL: http://localhost:3000
-      NODE_ENV: production
+      NODE_ENV: development
     depends_on:
       mongo:
         condition: service_healthy

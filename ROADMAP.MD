@@ -1,29 +1,22 @@
-# Car Doctor — Full-Stack Roadmap (Next.js + NestJS)
+# Car Doctor project status
 
-## 1. Screen Flow Summary
+The original design references are implemented as a responsive storefront and an administrator workspace. The current stack is Next.js, NestJS, MongoDB and Mongoose.
 
-- **Landing Page (Screens 1–4):** Hero & About, Service Area & Contact Bar, Browse Products & Team, Why Choose Us, Testimonials & Footer[cite: 1, 2, 3, 4]
-- **Service Details (Screens 5–6):** Dynamic service info, sidebar service switcher, 3 steps, video/brochure blocks, `Proceed Checkout`[cite: 5, 6]
-- **Check Out (Screen 7):** Customer details form (`First Name`, `Last Name`, `Your Phone`, `Your Email`, `Your Message`) & `Order Confirm`[cite: 7]
-- **Cart Details (Screen 11):** Cart/order item list, remove item (`x`), `Clear Shopping Cart`, `Continue Shopping`[cite: 11]
-- **Auth (Screens 8–9):** Sign Up (`/signup`) & Login (`/login`) with email/password and social options[cite: 8, 9]
-- **Manage All Orders (Screen 12):** Order list, customer email, date, status dropdown (`Approved` / `Pending`), remove order (`x`)[cite: 12]
-- **404 Page (Screen 10):** Fallback route with navigation back to active screens[cite: 10]
+## Storefront
 
-## 2. Step-by-Step Build Order
+- Landing page with hero, about, services, catalog, team, customer reviews, benefits, contact and editorial sections.
+- Service and product detail routes with booking/cart actions.
+- Browser-persisted cart, quantity controls, guest checkout and customer order history.
+- Email/password sign-up and login, HTTP-only cookie sessions, Google/Facebook OAuth integration points, and a 404 page.
+- Individual image/logo assets remain under `frontend/public/`.
 
-- [ ] **Step 1:** Next.js + NestJS + PostgreSQL (Prisma) setup, shared Navbar/Footer, and `404` page
-- [ ] **Step 2:** Database schema (`User`, `Service`, `Product`, `CartItem`, `Order`, `TeamMember`, `Testimonial`) & seed data
-- [ ] **Step 3:** Landing page sections connected to NestJS `GET` endpoints
-- [ ] **Step 4:** Service details page (`/services/[slug]`) & checkout flow (`/checkout` -> `POST /orders`)
-- [ ] **Step 5:** Cart details screen (`GET`, `DELETE` item, `Clear Shopping Cart`, `Continue Shopping`)
-- [ ] **Step 6:** Authentication (`/signup`, `/login`, JWT/cookies, NestJS Auth & Role Guards)
-- [ ] **Step 7:** `Manage All Orders` (`PATCH /orders/:id/status`, `DELETE /orders/:id`) & `Manage Inventory` CRUD
+## Backend and administration
 
-## 3. Core NestJS API Endpoints
+- MongoDB-backed users, products, services, cart items, orders, team profiles and testimonials.
+- Demo catalog/content seed data and a development-only seeded administrator.
+- Role-protected administrator operations for order status/deletion, product/service inventory and team/review content.
+- API validation, CORS, health endpoint and JWT cookie/bearer authentication.
 
-- **Auth:** `POST /auth/signup`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`
-- **Catalog & Content:** `GET /services`, `GET /services/:slug`, `GET /products`, `GET /products/:id`, `GET /team`, `GET /testimonials`
-- **Cart & Orders:** `GET /cart`, `POST /cart`, `DELETE /cart/:itemId`, `DELETE /cart`, `POST /orders`, `GET /orders`, `PATCH /orders/:id/status`, `DELETE /orders/:id`
-- **Inventory:** `POST /products`, `PATCH /products/:id`, `DELETE /products/:id`
+## Local setup
 
+Run `docker compose up --build` from the repository root. See [`README.md`](./README.md) for the demo login and environment configuration. Google/Facebook OAuth remains inactive until provider credentials and matching local callback URLs are configured in `backend/.env`.

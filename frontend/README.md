@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Car Doctor storefront
 
-## Getting Started
+Responsive Next.js storefront for the Car Doctor service center. The image files in `public/` are kept separately from the page components so they can be replaced without editing the UI.
 
-First, run the development server:
+## Run locally
+
+From the repository root, start the MongoDB-backed API and Next.js app:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The storefront is at [http://localhost:3000](http://localhost:3000); the API is at [http://localhost:5000/api](http://localhost:5000/api). For frontend-only work, install the frontend dependencies and run `npm run dev` from this folder. Set `NEXT_PUBLIC_API_URL` to the backend origin in `.env.local` if it is not running on port 5000. If the API is offline, the storefront uses bundled demo catalog data and keeps the cart in browser storage.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo administrator
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In the local Docker Compose development environment, the backend seeds a demo administrator:
 
-## Learn More
+- Email: `admin@cardoctor.demo`
+- Password: `Admin123!`
 
-To learn more about Next.js, take a look at the following resources:
+Change these through `DEMO_ADMIN_EMAIL` and `DEMO_ADMIN_PASSWORD` in `backend/.env` before sharing the demo. Demo administrator seeding is disabled when `NODE_ENV=production`. The browser-only preview login can open the demo dashboard when the API is offline, but those local changes are not persisted to MongoDB.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Social sign-in
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Email/password registration and login work through the API. Google and Facebook OAuth are implemented but need credentials configured in `backend/.env`; see `backend/.env.example`. Set each provider's callback URL to:
 
-## Deploy on Vercel
+- Google: `http://localhost:5000/api/auth/google/callback`
+- Facebook: `http://localhost:5000/api/auth/facebook/callback`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The backend returns the browser to `/auth/callback` after successful authentication and stores the JWT in an HTTP-only cookie.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Admin workspace
+
+The administrator dashboard manages orders and statuses, product inventory, services, team profiles and customer reviews. Public catalog/content reads are served by NestJS and are seeded with sample records when their MongoDB collections are empty.

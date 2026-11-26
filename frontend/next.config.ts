@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   /* config options here */
+  allowedDevOrigins: ["192.168.0.175"],
   experimental: {
     agentFeedback: true,
   },
