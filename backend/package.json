@@ -1,4 +1,12 @@
 {
+  "name": "car-doctor-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "start:prod": "node dist/main.js"
+  },
   "dependencies": {
     "@nestjs/common": "^12.6.2",
     "@nestjs/config": "^12.1.1",
