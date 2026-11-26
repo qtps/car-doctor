@@ -1,16 +1,47 @@
-# Dependencies
-**/node_modules/
+# ==============================================================================
+# DEPENDENCIES
+# ==============================================================================
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+.pnp/
+.pnp.js
 
-# Environment variables (NEVER commit real secrets)
-**/.env
-**/.env*.local
+# ==============================================================================
+# ENVIRONMENT VARIABLES (NEVER COMMIT REAL SECRETS)
+# ==============================================================================
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
 
-# Build outputs
-**/dist/
-**/.next/
-**/out/
+# ==============================================================================
+# BUILD & CACHE OUTPUTS
+# ==============================================================================
+# NestJS (backend)
+backend/dist/
+backend/build/
+backend/coverage/
 
-# OS & logs
-.DS_Store
+# Next.js (frontend)
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# ==============================================================================
+# LOGS & OS / EDITOR FILES
+# ==============================================================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 *.log
-
+.DS_Store
+Thumbs.db
