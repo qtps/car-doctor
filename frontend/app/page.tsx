@@ -7,9 +7,6 @@ import {
   FiArrowRight,
   FiArrowUpRight,
   FiCheck,
-  FiClock,
-  FiMapPin,
-  FiPhone,
 } from 'react-icons/fi';
 import { FaStar } from 'react-icons/fa';
 import { useState } from 'react';
@@ -155,15 +152,15 @@ export default function HomePage() {
 
       <section className={cx(ui.container, 'relative z-[1] mt-[-1px] grid grid-cols-3 gap-[18px] rounded-xl bg-ink px-[clamp(22px,4vw,52px)] py-[29px] text-white max-[680px]:mt-0 max-[680px]:grid-cols-1 max-[680px]:gap-[19px] max-[680px]:rounded-none max-[680px]:px-6 max-[680px]:py-[25px]')}>
         <div className="flex items-center gap-[15px]">
-          <span className="grid h-[43px] w-[43px] shrink-0 place-items-center rounded-full bg-brand/15 text-[#ff654e]"><FiClock aria-hidden="true" size={21} /></span>
+          <span className="grid h-[43px] w-[43px] shrink-0 place-items-center"><Image src="/calender.svg" alt="" width={41} height={41} /></span>
           <span><small className="block text-[10px] text-[#a9afb1]">We are open Monday–Friday</small><strong className="mt-0.5 block text-[14px] max-[680px]:text-[13px]">7:00 am – 9:00 pm</strong></span>
         </div>
         <a className="flex items-center gap-[15px]" href="tel:+25462512658">
-          <span className="grid h-[43px] w-[43px] shrink-0 place-items-center rounded-full bg-brand/15 text-[#ff654e]"><FiPhone aria-hidden="true" size={20} /></span>
+          <span className="grid h-[43px] w-[43px] shrink-0 place-items-center"><Image src="/call.svg" alt="" width={43} height={38} /></span>
           <span><small className="block text-[10px] text-[#a9afb1]">Have a question?</small><strong className="mt-0.5 block text-[14px] max-[680px]:text-[13px]">+254 625 12658</strong></span>
         </a>
         <a className="flex items-center gap-[15px]" href="https://maps.google.com/?q=Liza+Street+New+York">
-          <span className="grid h-[43px] w-[43px] shrink-0 place-items-center rounded-full bg-brand/15 text-[#ff654e]"><FiMapPin aria-hidden="true" size={20} /></span>
+          <span className="grid h-[43px] w-[43px] shrink-0 place-items-center"><Image src="/location.svg" alt="" width={39} height={43} /></span>
           <span><small className="block text-[10px] text-[#a9afb1]">Need a repair? Visit us</small><strong className="mt-0.5 block text-[14px] max-[680px]:text-[13px]">Liza Street, New York</strong></span>
         </a>
       </section>
@@ -230,7 +227,7 @@ export default function HomePage() {
             <h2>What Customer Says</h2>
             <p>The Majority Have Suffered Alteration In Some Form, By Injected Humour, Or Randomised Words Which Don&apos;t Look Even Slightly Believable.</p>
           </div>
-          <div className="relative mx-auto max-w-[780px]">
+          <div className="relative mx-auto max-w-[860px]">
             {visibleTestimonials.length > 1 && <button className="absolute top-1/2 left-[-20px] z-[1] grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-[#f3f3f3] text-ink transition hover:bg-[#e8e8e8] max-[680px]:left-[-10px]" type="button" aria-label="Previous reviews" onClick={() => setReviewIndex((index) => (index + visibleTestimonials.length - 1) % visibleTestimonials.length)}><FiArrowLeft aria-hidden="true" /></button>}
             <div className="grid grid-cols-2 gap-4 max-[680px]:grid-cols-1">
               {displayedReviews.map((review, index) => (

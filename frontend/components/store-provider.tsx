@@ -38,7 +38,12 @@ type StoreContextValue = {
   removeFromCart: (productId: string) => Promise<void>;
   clearCart: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<User>;
-  signUp: (name: string, email: string, password: string) => Promise<User>;
+  signUp: (name: string, email: string, password: string) => Promise<boolean>;
+  verifyEmail: (email: string, code: string) => Promise<User>;
+  resendVerification: (email: string) => Promise<string>;
+  requestPasswordReset: (email: string) => Promise<string>;
+  resetPassword: (email: string, code: string, password: string) => Promise<void>;
+  updateProfile: (name: string) => Promise<User>;
   signOut: () => Promise<void>;
   refreshCatalog: () => Promise<void>;
 };
@@ -170,52 +175,66 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [user]);
 
   const signIn = useCallback(async (email: string, password: string) => {
-    try {
-      const result = await apiRequest<{ user: User }>('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
-      setUser(result.user);
-      localStorage.setItem(USER_KEY, JSON.stringify(result.user));
-      return result.user;
-    } catch (error) {
-      if (!isBackendUnavailable(error) || process.env.NODE_ENV === 'production') throw error;
-      if (email.toLowerCase() !== 'admin@cardoctor.demo' || password !== 'Admin123!') throw error;
-      const demoAdmin: User = {
-        id: 'demo-admin',
-        name: 'Car Doctor Admin',
-        email: 'admin@cardoctor.demo',
-        role: 'admin',
-        provider: 'account',
-      };
-      setUser(demoAdmin);
-      localStorage.setItem(USER_KEY, JSON.stringify(demoAdmin));
-      return demoAdmin;
-    }
+    const result = await apiRequest<{ user: User }>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+    setUser(result.user);
+    localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+    return result.user;
   }, []);
 
   const signUp = useCallback(async (name: string, email: string, password: string) => {
-    try {
-      const result = await apiRequest<{ user: User }>('/auth/signup', {
-        method: 'POST',
-        body: JSON.stringify({ name, email, password }),
-      });
-      setUser(result.user);
-      localStorage.setItem(USER_KEY, JSON.stringify(result.user));
-      return result.user;
-    } catch (error) {
-      if (!isBackendUnavailable(error) || process.env.NODE_ENV === 'production') throw error;
-      const demoUser: User = {
-        id: `demo-${Date.now()}`,
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        role: 'customer',
-        provider: 'account',
-      };
-      setUser(demoUser);
-      localStorage.setItem(USER_KEY, JSON.stringify(demoUser));
-      return demoUser;
-    }
+    await apiRequest<{ verificationRequired: boolean }>('/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+    });
+    return true;
+  }, []);
+
+  const verifyEmail = useCallback(async (email: string, code: string) => {
+    const result = await apiRequest<{ user: User }>('/auth/verify-email', {
+      method: 'POST',
+      body: JSON.stringify({ email, code }),
+    });
+    setUser(result.user);
+    localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+    return result.user;
+  }, []);
+
+  const resendVerification = useCallback(async (email: string) => {
+    const result = await apiRequest<{ message: string }>('/auth/resend-verification', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+    return result.message;
+  }, []);
+
+  const requestPasswordReset = useCallback(async (email: string) => {
+    const result = await apiRequest<{ message: string }>('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+    return result.message;
+  }, []);
+
+  const resetPassword = useCallback(async (email: string, code: string, password: string) => {
+    await apiRequest('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ email, code, password }),
+    });
+    setUser(null);
+    localStorage.removeItem(USER_KEY);
+  }, []);
+
+  const updateProfile = useCallback(async (name: string) => {
+    const result = await apiRequest<{ user: User }>('/auth/profile', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    });
+    setUser(result.user);
+    localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+    return result.user;
   }, []);
 
   const signOut = useCallback(async () => {
@@ -230,11 +249,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(() => ({
     products, services, team, testimonials, cart, user, loading, notice,
-    setNotice, addToCart, setCartQuantity, removeFromCart, clearCart, signIn, signUp, signOut,
+    setNotice, addToCart, setCartQuantity, removeFromCart, clearCart,
+    signIn, signUp, verifyEmail, resendVerification, requestPasswordReset, resetPassword, updateProfile, signOut,
     refreshCatalog,
   }), [
     products, services, team, testimonials, cart, user, loading, notice,
-    addToCart, setCartQuantity, removeFromCart, clearCart, signIn, signUp, signOut, refreshCatalog,
+    addToCart, setCartQuantity, removeFromCart, clearCart,
+    signIn, signUp, verifyEmail, resendVerification, requestPasswordReset, resetPassword, updateProfile,
+    signOut, refreshCatalog,
   ]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

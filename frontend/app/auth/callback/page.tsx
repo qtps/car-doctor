@@ -21,7 +21,7 @@ export default function AuthCallbackPage() {
         if (!active) return;
         localStorage.setItem('car-doctor-user', JSON.stringify(user));
         setNotice(`Welcome, ${user.name}`);
-        router.replace(user.role === 'admin' ? '/admin' : '/account/orders');
+        router.replace(user.role === 'admin' ? '/admin' : '/account');
       })
       .catch((reason: unknown) => {
         if (active) setError(reason instanceof Error ? reason.message : 'Could not complete sign-in.');

@@ -43,6 +43,7 @@ export type User = {
   email: string;
   role: 'customer' | 'admin';
   provider?: string;
+  emailVerified?: boolean;
 };
 
 export type CartLine = { productId: string; quantity: number };

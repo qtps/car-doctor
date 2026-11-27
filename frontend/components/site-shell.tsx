@@ -28,8 +28,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {!isAdmin && <header className="sticky top-0 z-20 border-b border-ink/5 bg-white/95 backdrop-blur-[14px]">
-        <div className={cx(ui.container, 'flex min-h-[82px] items-center justify-between gap-7 max-[900px]:min-h-[72px] max-[900px]:gap-[14px] max-[680px]:min-h-[68px]')}>
+      {!isAdmin && <header className="sticky top-0 z-20 border-b border-ink/5 bg-white">
+        <div className={cx(ui.container, 'flex min-h-[82px] items-center justify-between gap-7 min-[681px]:grid min-[681px]:grid-cols-[1fr_auto_1fr] max-[900px]:min-h-[72px] max-[900px]:gap-[14px] max-[680px]:min-h-[68px]')}>
           <Link className="flex w-[150px] shrink-0 items-center max-[900px]:w-[120px] max-[680px]:w-[112px]" href="/" aria-label="Car Doctor home">
             <Image className="h-auto w-[126px] max-[900px]:w-[110px] max-[680px]:w-[104px]" src="/logo.svg" alt="Car Doctor" width={107} height={87} priority />
           </Link>
@@ -52,7 +52,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             ))}
             <Link
               className="hidden max-[680px]:mt-[5px] max-[680px]:block max-[680px]:border-t max-[680px]:border-line max-[680px]:pt-[14px]"
-              href={currentUser?.role === 'admin' ? '/admin' : currentUser ? '/account/orders' : '/login'}
+              href={currentUser?.role === 'admin' ? '/admin' : currentUser ? '/account' : '/login'}
               onClick={() => setMenuOpen(false)}
             >
               {currentUser ? 'My account' : 'Sign in'}
@@ -61,7 +61,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           <div className="ml-auto flex items-center gap-[17px] max-[900px]:gap-[10px] max-[680px]:gap-2">
             <Link
               className="relative grid h-8 w-7 place-items-center max-[680px]:hidden"
-              href={currentUser?.role === 'admin' ? '/admin' : currentUser ? '/account/orders' : '/login'}
+              href={currentUser?.role === 'admin' ? '/admin' : currentUser ? '/account' : '/login'}
               aria-label={currentUser ? `Account: ${currentUser.name}` : 'Sign in'}
               title={currentUser?.name ?? 'Sign in'}
             >
@@ -85,10 +85,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <Image src="/logo.svg" alt="Car Doctor" width={107} height={87} />
             </Link>
             <p className="max-w-[290px] text-[12px] text-[#b2b6b7]">Expert care for every mile. Trusted repairs, quality parts and service you can count on.</p>
-            <div className="mt-[17px] flex gap-[9px]" aria-label="Social networks">
-              <a className="grid h-[30px] w-[30px] place-items-center rounded-full bg-[#303334]" href="https://www.facebook.com/" aria-label="Facebook"><Image className="brightness-0 grayscale invert" src="/facebook.svg" alt="" width={17} height={17} /></a>
-              <a className="grid h-[30px] w-[30px] place-items-center rounded-full bg-[#303334]" href="https://www.instagram.com/" aria-label="Instagram"><Image className="brightness-0 grayscale invert" src="/instagram.svg" alt="" width={17} height={17} /></a>
-              <a className="grid h-[30px] w-[30px] place-items-center rounded-full bg-[#303334]" href="https://www.linkedin.com/" aria-label="LinkedIn"><Image className="brightness-0 grayscale invert" src="/linkedin.svg" alt="" width={17} height={17} /></a>
+            <div className="mt-[17px] flex gap-[8px]" aria-label="Social networks">
+              <a className="transition-opacity hover:opacity-80" href="https://twitter.com/" aria-label="Twitter"><Image src="/footer-tweeter.svg" alt="" width={37} height={35} /></a>
+              <a className="transition-opacity hover:opacity-80" href="https://www.instagram.com/" aria-label="Instagram"><Image src="/footer_insta.svg" alt="" width={35} height={35} /></a>
+              <a className="transition-opacity hover:opacity-80" href="https://www.linkedin.com/" aria-label="LinkedIn"><Image src="/footer_linkedin.svg" alt="" width={35} height={35} /></a>
             </div>
           </div>
           <div className="flex flex-col items-start gap-[11px] [&_h3]:my-[7px] [&_h3]:mb-[10px] [&_h3]:text-[14px] [&_a]:text-[12px] [&_a]:font-normal [&_a]:text-[#b2b6b7] [&_a:hover]:text-brand [&_p]:m-0 [&_p]:text-[12px] [&_p]:font-normal [&_p]:text-[#b2b6b7]">

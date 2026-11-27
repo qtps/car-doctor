@@ -2,7 +2,6 @@
 # DEPENDENCIES
 # ==============================================================================
 node_modules/
-backend/node_modules/
 frontend/node_modules/
 .pnp/
 .pnp.js
@@ -23,11 +22,6 @@ frontend/.env.*
 # ==============================================================================
 # BUILD & CACHE OUTPUTS
 # ==============================================================================
-# NestJS (backend)
-backend/dist/
-backend/build/
-backend/coverage/
-
 # Next.js (frontend)
 frontend/.next/
 frontend/out/

@@ -24,7 +24,7 @@ export async function apiRequest<T>(
       },
     });
   } catch {
-    throw new ApiError('The backend is not reachable. Start the backend to save this change.', 0);
+    throw new ApiError('The backend is not set up yet, so this change cannot be saved.', 0);
   }
 
   if (!response.ok) {
