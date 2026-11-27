@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiBaseUrl, apiRequest } from '@/lib/api';
+import { apiBaseUrl, apiRequest, isDemoMode } from '@/lib/api';
 import { useStore } from './store-provider';
 import { cx, ui } from '@/lib/tailwind';
 import { FiArrowUpRight } from 'react-icons/fi';
@@ -12,7 +12,7 @@ import { FiArrowUpRight } from 'react-icons/fi';
 export function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
   const isSignup = mode === 'signup';
   const router = useRouter();
-  const { signIn, signUp, verifyEmail, resendVerification } = useStore();
+  const { signIn, previewAdmin, signUp, verifyEmail, resendVerification } = useStore();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -86,17 +86,26 @@ export function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
     }
   }
 
+  function openAdminPreview() {
+    try {
+      previewAdmin();
+      router.push('/admin');
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : 'Could not open admin preview.');
+    }
+  }
+
   return (
-    <section className={cx(ui.container, 'grid min-h-167.5 grid-cols-[1fr_minmax(0,.86fr)] items-center gap-[clamp(40px,8vw,120px)] py-[58px] pb-[82px] max-[680px]:min-h-0 max-[680px]:grid-cols-1 max-[680px]:gap-5 max-[680px]:py-[35px] max-[680px]:pb-[58px]')}>
-      <div className="flex flex-col items-center text-center">
+    <section className="mx-auto grid min-h-167.5 w-[min(1100px,76%)] grid-cols-[minmax(0,.8fr)_minmax(0,1fr)] items-center gap-[clamp(30px,5vw,45px)] py-[58px] pb-[82px] max-[680px]:min-h-0 max-[680px]:w-[calc(100%-32px)] max-[680px]:grid-cols-1 max-[680px]:gap-5 max-[680px]:py-[35px] max-[680px]:pb-[58px]">
+      <div className={cx('flex flex-col items-center text-center', isSignup && 'max-[680px]:hidden')}>
         <Image className="h-auto max-h-none max-w-[min(100%,430px)] object-contain max-[680px]:h-auto max-[680px]:w-auto max-[680px]:max-h-55" src="/sign_up.png" alt="Securely manage your Car Doctor account" width={460} height={502} priority />
-        <div className="mt-3 max-w-97.5 max-[680px]:hidden"><span className={ui.eyebrow}>Your car, in good hands</span><h2 className="my-[7px] text-[27px] font-bold tracking-[-.04em]">Service made simple.</h2><p className="m-0 text-[12px] text-muted">Book a visit, track your orders and get expert support whenever you need it.</p></div>
+        <div className={cx('mt-3 max-w-97.5 max-[680px]:hidden', isSignup && 'hidden')}><span className={ui.eyebrow}>Your car, in good hands</span><h2 className="my-[7px] text-[27px] font-bold tracking-[-.04em]">Service made simple.</h2><p className="m-0 text-[12px] text-muted">Book a visit, track your orders and get expert support whenever you need it.</p></div>
       </div>
       <div className="w-full max-w-127.5 justify-self-center rounded-xl border border-line bg-white p-[clamp(25px,4vw,42px)] shadow-[0_20px_60px_rgba(27,34,36,.04)] max-[680px]:px-5 max-[680px]:py-6">
         <div className="[&_h1]:my-[8px] [&_h1]:mt-2 [&_h1]:mb-[5px] [&_h1]:text-[29px] [&_h1]:font-bold [&_h1]:tracking-[-.04em] max-[680px]:[&_h1]:text-[25px] [&_p]:mt-0 [&_p]:mb-[25px] [&_p]:text-[12px] [&_p]:text-muted">
-          <span className={ui.eyebrow}>{verificationRequired ? 'Email verification' : isSignup ? 'Join the Car Doctor family' : 'Welcome back'}</span>
-          <h1>{verificationRequired ? 'Verify your email' : isSignup ? 'Create your account' : 'Sign in to your account'}</h1>
-          <p>{verificationRequired ? 'Enter the six-digit code sent to your email address.' : isSignup ? 'A better car care experience starts here.' : 'Access your appointments and order history.'}</p>
+          {!isSignup && <span className={ui.eyebrow}>{verificationRequired ? 'Email verification' : 'Welcome back'}</span>}
+          <h1>{verificationRequired ? 'Verify your email' : isSignup ? 'Sign Up' : 'Sign in to your account'}</h1>
+          <p className={cx(isSignup && !verificationRequired && 'hidden')}>{verificationRequired ? 'Enter the six-digit code sent to your email address.' : isSignup ? 'A better car care experience starts here.' : 'Access your appointments and order history.'}</p>
         </div>
         <form className="grid gap-[15px] [&_label]:flex [&_label]:flex-col [&_label]:gap-[7px] [&_label]:text-[11px] [&_label]:font-bold [&_label]:text-[#414648] [&_input]:min-h-11.75 [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-[#e1e4e4] [&_input]:bg-white [&_input]:px-[13px] [&_input]:py-[11px] [&_input]:text-[12px] [&_input]:font-normal [&_input]:outline-none [&_input]:transition [&_input]:focus:border-brand [&_input]:focus:shadow-[0_0_0_3px_rgba(255,61,34,.1)]" onSubmit={submit}>
           {isSignup && !verificationRequired && <label>Full name<input autoComplete="name" name="name" placeholder="Your name" required minLength={2} value={name} onChange={(event) => setName(event.target.value)} /></label>}
@@ -108,21 +117,25 @@ export function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
           {!isSignup && !verificationRequired && <Link className="w-fit text-[11px] font-bold text-brand" href="/forgot-password">Forgot your password?</Link>}
           {error && <p className={ui.formError} role="alert">{error}</p>}
           {notice && <p className="m-0 text-[11px] text-[#278b5d]" role="status">{notice}</p>}
-          <button className={cx(ui.button, ui.buttonPrimary, 'mt-[3px] w-full disabled:cursor-wait disabled:opacity-70')} type="submit" disabled={busy}>{busy ? 'Please wait…' : verificationRequired ? 'Verify email' : isSignup ? 'Create account' : 'Sign in'} <FiArrowUpRight aria-hidden="true" /></button>
+          <button className={cx(ui.button, ui.buttonPrimary, 'mt-[3px] w-full disabled:cursor-wait disabled:opacity-70')} type="submit" disabled={busy}>{busy ? 'Please wait…' : verificationRequired ? 'Verify email' : isSignup ? 'Sign Up' : 'Sign in'} {!isSignup && <FiArrowUpRight aria-hidden="true" />}</button>
           {(verificationRequired || resendAvailable) && <button className="w-fit justify-self-center border-0 bg-transparent text-[11px] font-bold text-brand disabled:opacity-60" type="button" onClick={resendCode} disabled={busy}>Resend verification code</button>}
         </form>
-        {providers && (providers.google || providers.facebook) && !verificationRequired && <>
+        {!verificationRequired && <>
           <div className="my-[21px] mb-[15px] flex items-center gap-3 text-[10px] text-muted"><span className="h-px flex-1 bg-line" />or continue with<span className="h-px flex-1 bg-line" /></div>
-          <div className="grid grid-cols-2 gap-[11px] [&_a]:flex [&_a]:min-h-10.75 [&_a]:items-center [&_a]:justify-center [&_a]:gap-[9px] [&_a]:rounded-md [&_a]:border [&_a]:border-line [&_a]:text-[11px] [&_a]:font-bold [&_a:hover]:border-brand">
-            {providers.google && <a href={`${apiBaseUrl}/auth/google`} aria-label="Continue with Google"><Image className="h-4.5 w-4.5 shrink-0" src="/google.svg" alt="" width={18} height={18} />Google</a>}
-            {providers.facebook && <a href={`${apiBaseUrl}/auth/facebook`} aria-label="Continue with Facebook"><Image className="h-4.5 w-4.5 shrink-0" src="/facebook.svg" alt="" width={18} height={18} />Facebook</a>}
+          <div className="grid grid-cols-2 gap-[11px] [&_a]:flex [&_a]:min-h-10.75 [&_a]:items-center [&_a]:justify-center [&_a]:gap-[9px] [&_a]:rounded-md [&_a]:border [&_a]:border-line [&_a]:text-[11px] [&_a]:font-bold [&_a:hover]:border-brand [&_button]:flex [&_button]:min-h-10.75 [&_button]:items-center [&_button]:justify-center [&_button]:gap-[9px] [&_button]:rounded-md [&_button]:border [&_button]:border-line [&_button]:bg-white [&_button]:text-[11px] [&_button]:font-bold [&_button]:disabled:cursor-not-allowed [&_button]:disabled:opacity-50">
+            {providers?.google
+              ? <a href={`${apiBaseUrl}/auth/google`} aria-label="Continue with Google"><Image className="h-4.5 w-4.5 shrink-0" src="/google.svg" alt="" width={18} height={18} />Google</a>
+              : <button type="button" disabled title="Google sign-in requires backend setup" aria-label="Google sign-in unavailable"><Image className="h-4.5 w-4.5 shrink-0" src="/google.svg" alt="" width={18} height={18} />Google</button>}
+            {providers?.facebook
+              ? <a href={`${apiBaseUrl}/auth/facebook`} aria-label="Continue with Facebook"><Image className="h-4.5 w-4.5 shrink-0" src="/facebook.svg" alt="" width={18} height={18} />Facebook</a>
+              : <button type="button" disabled title="Facebook sign-in requires backend setup" aria-label="Facebook sign-in unavailable"><Image className="h-4.5 w-4.5 shrink-0" src="/facebook.svg" alt="" width={18} height={18} />Facebook</button>}
           </div>
         </>}
         <p className="mt-5 text-center text-[11px] text-muted">
           {isSignup ? 'Already have an account?' : 'New to Car Doctor?'}
           {' '}<Link className="font-bold text-brand" href={isSignup ? '/login' : '/signup'}>{isSignup ? 'Sign in' : 'Create an account'}</Link>
         </p>
-        {!isSignup && process.env.NODE_ENV !== 'production' && <div className="mt-[17px] flex flex-wrap justify-center gap-x-3 gap-y-[6px] rounded-md bg-[#f7f8f8] p-[10px] text-[9px] text-muted"><strong className="text-ink">Preview admin</strong><span>admin@cardoctor.demo</span><span>Admin123!</span></div>}
+        {!isSignup && isDemoMode && <div className="mt-[17px] rounded-md bg-[#f7f8f8] p-3 text-center"><p className="mb-2 text-[10px] text-muted">Preview the admin page without a backend. Backend actions will not be saved.</p><button className="w-full rounded-md border border-line bg-white px-3 py-2 text-[11px] font-bold text-ink hover:border-brand hover:text-brand" type="button" onClick={openAdminPreview}>Open admin preview</button></div>}
       </div>
     </section>
   );

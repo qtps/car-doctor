@@ -38,6 +38,7 @@ type StoreContextValue = {
   removeFromCart: (productId: string) => Promise<void>;
   clearCart: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<User>;
+  previewAdmin: () => User;
   signUp: (name: string, email: string, password: string) => Promise<boolean>;
   verifyEmail: (email: string, code: string) => Promise<User>;
   resendVerification: (email: string) => Promise<string>;
@@ -184,6 +185,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return result.user;
   }, []);
 
+  const previewAdmin = useCallback(() => {
+    if (!isDemoMode) throw new Error('Admin preview is available only in development.');
+    const previewUser: User = {
+      id: 'demo-admin-preview',
+      name: 'Admin Preview',
+      email: 'admin@cardoctor.demo',
+      role: 'admin',
+    };
+    setUser(previewUser);
+    localStorage.setItem(USER_KEY, JSON.stringify(previewUser));
+    return previewUser;
+  }, []);
+
   const signUp = useCallback(async (name: string, email: string, password: string) => {
     await apiRequest<{ verificationRequired: boolean }>('/auth/signup', {
       method: 'POST',
@@ -250,12 +264,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => ({
     products, services, team, testimonials, cart, user, loading, notice,
     setNotice, addToCart, setCartQuantity, removeFromCart, clearCart,
-    signIn, signUp, verifyEmail, resendVerification, requestPasswordReset, resetPassword, updateProfile, signOut,
+    signIn, previewAdmin, signUp, verifyEmail, resendVerification, requestPasswordReset, resetPassword, updateProfile, signOut,
     refreshCatalog,
   }), [
     products, services, team, testimonials, cart, user, loading, notice,
     addToCart, setCartQuantity, removeFromCart, clearCart,
-    signIn, signUp, verifyEmail, resendVerification, requestPasswordReset, resetPassword, updateProfile,
+    signIn, previewAdmin, signUp, verifyEmail, resendVerification, requestPasswordReset, resetPassword, updateProfile,
     signOut, refreshCatalog,
   ]);
 

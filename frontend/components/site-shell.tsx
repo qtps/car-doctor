@@ -81,8 +81,11 @@ export function SiteShell({ children }: { children: ReactNode }) {
       {!isAdmin && <footer className="bg-[#1b1d1e] px-0 pt-[62px] pb-5 text-white max-[680px]:pt-11">
         <div className={cx(ui.container, 'grid grid-cols-[1.7fr_repeat(3,1fr)] gap-12 max-[680px]:grid-cols-2 max-[680px]:gap-x-[22px] max-[680px]:gap-y-[30px]')}>
           <div className="max-[680px]:col-span-full">
-            <Link href="/" className="inline-flex rounded-[5px] bg-white px-2 py-1">
-              <Image src="/logo.svg" alt="Car Doctor" width={107} height={87} />
+            <Link href="/" className="relative inline-flex" aria-label="Car Doctor">
+              <Image src="/logo.svg" alt="" width={107} height={87} />
+              <span className="pointer-events-none absolute inset-x-0 bottom-0 h-[23px] overflow-hidden" aria-hidden="true">
+                <Image className="absolute bottom-0 left-0 h-[87px] w-[107px] brightness-0 invert" src="/logo.svg" alt="" width={107} height={87} />
+              </span>
             </Link>
             <p className="max-w-72.5 text-[12px] text-[#b2b6b7]">Expert care for every mile. Trusted repairs, quality parts and service you can count on.</p>
             <div className="mt-[17px] flex gap-[8px]" aria-label="Social networks">
