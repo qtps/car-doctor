@@ -15,9 +15,9 @@ export default function BlogPage() {
       <div className={ui.pageIntro}><span className={ui.eyebrow}>From the garage</span><h1 className={ui.pageIntroHeading}>Helpful reads for every driver</h1><p className={ui.pageIntroCopy}>Practical advice from the Car Doctor team to help you feel good about every mile.</p></div>
       <div className="grid grid-cols-3 gap-5 max-[680px]:grid-cols-1">
         {articles.map((article) => <article className="overflow-hidden rounded-[10px] border border-line bg-white" key={article.title}>
-          <Image className="block h-[190px] w-full object-cover" src={article.image} alt="" width={500} height={320} unoptimized />
-          <div className="p-[18px] [&>span]:text-[10px] [&>span]:font-extrabold [&>span]:uppercase [&>span]:text-brand [&_h3]:my-2 [&_h3]:mb-3 [&_h3]:min-h-[52px] [&_h3]:text-base [&_h3]:leading-[1.5] [&_p]:text-[11px] [&_p]:text-muted [&_a]:text-[12px] [&_a]:font-bold">
-            <span>{article.category}</span><h3>{article.title}</h3><p>{article.copy}</p><Link className="inline-flex items-center gap-1" href="/#services">Explore related services <FiArrowUpRight className="text-brand" aria-hidden="true" /></Link>
+          <Image className="block h-47.5 w-full object-cover" src={article.image} alt="" width={500} height={320} unoptimized />
+          <div className="p-[18px] [&>span]:text-[10px] [&>span]:font-extrabold [&>span]:uppercase [&>span]:text-brand [&_h3]:my-2 [&_h3]:mb-3 [&_h3]:min-h-13 [&_h3]:text-base [&_h3]:leading-[1.5] [&_p]:text-[11px] [&_p]:text-muted [&_a]:text-[12px] [&_a]:font-bold">
+            <span>{article.category}</span><h3>{article.title}</h3><p>{article.copy}</p><Link className="inline-flex items-center gap-1" href="/#contact">Ask us a question <FiArrowUpRight className="text-brand" aria-hidden="true" /></Link>
           </div>
         </article>)}
       </div>

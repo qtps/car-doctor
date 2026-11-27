@@ -41,7 +41,7 @@ function ProductDetailContent() {
 
   return (
     <section className={cx(ui.container, 'grid grid-cols-2 items-center gap-[clamp(35px,6vw,80px)] py-[70px] max-[680px]:grid-cols-1 max-[680px]:gap-7 max-[680px]:py-[40px]')}>
-      <div className="grid min-h-[480px] place-items-center overflow-hidden rounded-xl bg-soft max-[680px]:min-h-[330px]"><Image className="h-full max-h-[540px] w-full object-contain mix-blend-multiply" src={product.image} alt={product.name} width={700} height={600} unoptimized /></div>
+      <div className="grid min-h-120 place-items-center overflow-hidden rounded-xl bg-soft max-[680px]:min-h-82.5"><Image className="h-full max-h-135 w-full object-contain mix-blend-multiply" src={product.image} alt={product.name} width={700} height={600} unoptimized /></div>
       <div className="[&_h1]:my-[9px] [&_h1]:mb-2 [&_h1]:text-[clamp(30px,4vw,46px)] [&_h1]:font-bold [&_h1]:leading-[1.13] [&_h1]:tracking-[-.05em] [&_p]:text-[13px] [&_p]:leading-[1.8] [&_p]:text-muted">
         <span className={ui.eyebrow}>{product.category}</span>
         <div className="mt-4 flex items-center gap-0.5"><span className="flex gap-0.5 text-[#ff9a2c]" role="img" aria-label={`${product.rating} out of 5 stars`}>{Array.from({ length: 5 }, (_, index) => <FaStar className={index < product.rating ? '' : 'text-line'} key={index} />)}</span><span className="ml-1 text-[10px] tracking-normal text-muted">Expert selected</span></div>
@@ -50,7 +50,7 @@ function ProductDetailContent() {
         <p>{product.description}</p>
         <p>Quality checked by our team and selected to help keep your vehicle dependable. If you are unsure whether this part fits, contact us before ordering.</p>
         <div className={cx('my-[18px] flex items-center gap-2 text-[11px] font-bold text-success [&>span]:h-2 [&>span]:w-2 [&>span]:rounded-full [&>span]:bg-current', unavailable && 'text-[#c62828]')}><span /> {unavailable ? 'Currently unavailable' : `In stock · ${product.stock - quantityInCart} available`}</div>
-        <button className={cx(ui.button, ui.buttonPrimary, 'min-w-[180px]')} type="button" onClick={() => void addItem()} disabled={unavailable}>{unavailable ? 'Sold out' : 'Add to cart'} {!unavailable && <FiArrowUpRight aria-hidden="true" />}</button>
+        <button className={cx(ui.button, ui.buttonPrimary, 'min-w-45')} type="button" onClick={() => void addItem()} disabled={unavailable}>{unavailable ? 'Sold out' : 'Add to cart'} {!unavailable && <FiArrowUpRight aria-hidden="true" />}</button>
         <div className="mt-[21px] flex flex-wrap gap-[13px] border-t border-line pt-[17px] text-[10px] font-bold text-[#656b6d]"><span className="inline-flex items-center gap-1 text-success"><FiCheck aria-hidden="true" /><span className="text-[#656b6d]">Trusted quality</span></span><span className="inline-flex items-center gap-1 text-success"><FiCheck aria-hidden="true" /><span className="text-[#656b6d]">Easy returns</span></span><span className="inline-flex items-center gap-1 text-success"><FiCheck aria-hidden="true" /><span className="text-[#656b6d]">Expert support</span></span></div>
       </div>
     </section>

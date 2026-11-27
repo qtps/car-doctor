@@ -31,7 +31,7 @@ export default function AuthCallbackPage() {
 
   return (
     <section className={ui.statusPage}>
-      <span className="grid h-[65px] w-[65px] place-items-center rounded-full bg-[#e8f7ef] text-success"><FiCheck size={27} aria-hidden="true" /></span>
+      <span className="grid h-16.25 w-16.25 place-items-center rounded-full bg-[#e8f7ef] text-success"><FiCheck size={27} aria-hidden="true" /></span>
       <h1 className={ui.statusHeading}>{error ? 'Sign-in needs another try' : 'Finishing your sign-in…'}</h1>
       <p className={ui.statusCopy}>{error || 'Your secure session is being prepared.'}</p>
       {error && <Link className={cx(ui.button, ui.buttonPrimary)} href="/login">Back to sign in</Link>}

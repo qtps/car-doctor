@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Product, Service } from '@/lib/demo-data';
 import { useStore } from './store-provider';
 import { FaStar } from 'react-icons/fa';
-import { FiArrowUpRight } from 'react-icons/fi';
+import { FiArrowRight, FiShoppingBag } from 'react-icons/fi';
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart, cart, setNotice } = useStore();
@@ -20,38 +20,38 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <article className="group overflow-hidden rounded-[10px] border border-line bg-white transition duration-200 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(26,35,39,.09)]">
-      <Link href={`/products/${product.slug}`} className="relative mx-[13px] mt-[13px] block h-[220px] overflow-hidden rounded-[7px] bg-[#f3f4f4] max-[900px]:h-[180px] max-[680px]:mx-2 max-[680px]:mt-2 max-[680px]:h-[145px]">
-        <Image className="h-full w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105" src={product.image} alt={product.name} width={420} height={300} unoptimized />
-        <span className="absolute top-3 left-3 rounded-full bg-white px-[10px] py-1 text-[10px] font-bold text-[#555b5d] max-[680px]:top-2 max-[680px]:left-2 max-[680px]:px-[7px] max-[680px]:py-[3px] max-[680px]:text-[9px]">{product.category}</span>
+    <article className="group relative rounded-[6px] border border-line bg-white p-2.5 pb-3.5 text-center transition-shadow duration-200 hover:shadow-[0_8px_24px_rgba(26,35,39,.08)]">
+      <Link href={`/products/${product.slug}`} className="block aspect-[3/2] overflow-hidden rounded-[5px] bg-[#f3f3f3]">
+        <Image className="h-full w-full object-contain p-2 mix-blend-multiply transition-transform duration-300 group-hover:scale-105" src={product.image} alt={product.name} width={420} height={300} unoptimized />
       </Link>
-      <div className="px-[18px] pt-[14px] pb-[17px] max-[680px]:p-[11px]">
-        <div className="flex gap-0.5 text-[#ff8a2c]" role="img" aria-label={`${product.rating} out of 5 stars`}>{Array.from({ length: 5 }, (_, index) => <FaStar className={index < product.rating ? '' : 'text-line'} key={index} />)}</div>
-        <Link href={`/products/${product.slug}`} className="my-[3px] mb-2 inline-block text-[16px] font-bold max-[680px]:text-[13px]">{product.name}</Link>
-        <div className="flex items-center justify-between">
-          <strong className="text-[15px] text-brand max-[680px]:text-[13px]">${product.price.toFixed(2)}</strong>
-          <button type="button" className="inline-flex items-center gap-2 rounded-[5px] border border-line bg-white px-[10px] py-[7px] text-[11px] font-bold text-ink hover:border-brand hover:text-brand max-[680px]:gap-1 max-[680px]:p-[6px] max-[680px]:text-[10px]" onClick={add} disabled={unavailable} aria-label={`Add ${product.name} to cart`}>
-            <Image src="/cart.svg" alt="" width={17} height={17} />
-            <span className="opacity-75">{unavailable ? 'Sold out' : 'Add'}</span>
-          </button>
-        </div>
-      </div>
+      <div className="mt-2 flex justify-center gap-0.5 text-[11px] leading-none text-[#ff8a2c]" role="img" aria-label={`${product.rating} out of 5 stars`}>{Array.from({ length: 5 }, (_, index) => <FaStar className={index < product.rating ? '' : 'text-line'} key={index} />)}</div>
+      <Link href={`/products/${product.slug}`} className="mt-1 block text-xs font-bold leading-tight text-[#3b3b3b]">{product.name}</Link>
+      <strong className="mt-1 block text-[11px] font-semibold leading-tight text-brand">${product.price.toFixed(2)}</strong>
+      <button
+        type="button"
+        className="pointer-events-none absolute top-6 right-6 grid size-6 place-items-center rounded-[5px] bg-white text-brand opacity-0 shadow-sm transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100"
+        onClick={add}
+        disabled={unavailable}
+        aria-label={`Add ${product.name} to cart`}
+      >
+        <FiShoppingBag aria-hidden="true" size={14} />
+      </button>
     </article>
   );
 }
 
 export function ServiceCard({ service }: { service: Service }) {
   return (
-    <Link href={`/services/${service.slug}`} className="group block overflow-hidden rounded-[10px] border border-line bg-white transition duration-200 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(26,35,39,.09)]">
-      <div className="h-[195px] overflow-hidden bg-[#f0f1f1] max-[900px]:h-[160px] max-[680px]:h-[135px]">
+    <Link href={`/services/${service.slug}`} className="group block rounded-[8px] border border-line bg-white p-3.5 transition duration-200 hover:shadow-[0_8px_24px_rgba(26,35,39,.08)] max-[680px]:p-2.5">
+      <div className="aspect-[3/2] overflow-hidden rounded-[6px] bg-[#f0f1f1]">
         <Image className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" src={service.image} alt={service.name} width={520} height={320} unoptimized />
       </div>
-      <div className="flex items-center justify-between gap-3 px-[19px] py-[18px] max-[680px]:p-3">
+      <div className="flex items-center justify-between gap-2 pt-3 max-[680px]:pt-2">
         <div>
-          <h3 className="mb-[5px] text-base font-bold max-[680px]:text-[13px]">{service.name}</h3>
-          <span className="text-[12px] font-bold text-brand max-[680px]:text-[10px]">Starting at ${service.price.toFixed(2)}</span>
+          <h3 className="mb-1 text-[15px] font-bold leading-tight text-[#3b3b3b] max-[680px]:text-[13px]">{service.name}</h3>
+          <span className="text-[12px] font-semibold text-brand max-[680px]:text-[10px]">Price : ${service.price.toFixed(2)}</span>
         </div>
-        <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-[#fff0ed] text-brand max-[680px]:h-[29px] max-[680px]:w-[29px]" aria-hidden="true"><FiArrowUpRight /></span>
+        <FiArrowRight className="shrink-0 text-brand" aria-hidden="true" />
       </div>
     </Link>
   );

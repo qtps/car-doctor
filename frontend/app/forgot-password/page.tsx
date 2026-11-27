@@ -40,12 +40,12 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <section className={cx(ui.container, 'grid min-h-[570px] place-items-center py-[58px]')}>
-      <div className="w-full max-w-[500px] rounded-xl border border-line bg-white p-[clamp(25px,4vw,42px)] shadow-[0_20px_60px_rgba(27,34,36,.04)]">
+    <section className={cx(ui.container, 'grid min-h-142.5 place-items-center py-[58px]')}>
+      <div className="w-full max-w-125 rounded-xl border border-line bg-white p-[clamp(25px,4vw,42px)] shadow-[0_20px_60px_rgba(27,34,36,.04)]">
         <span className={ui.eyebrow}>Account recovery</span>
         <h1 className="mb-2 mt-2 text-[29px] font-bold tracking-[-.04em]">{step === 'request' ? 'Forgot your password?' : 'Set a new password'}</h1>
         <p className="mb-6 mt-0 text-[12px] text-muted">{step === 'request' ? 'Enter your email and we will send a short-lived reset code if an account matches.' : 'Enter the six-digit code from your email and choose a new password.'}</p>
-        <form className="grid gap-[15px] [&_label]:flex [&_label]:flex-col [&_label]:gap-[7px] [&_label]:text-[11px] [&_label]:font-bold [&_input]:min-h-[47px] [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-[#e1e4e4] [&_input]:bg-white [&_input]:px-[13px] [&_input]:py-[11px] [&_input]:text-[12px] [&_input]:font-normal [&_input]:outline-none [&_input]:focus:border-brand" onSubmit={submit}>
+        <form className="grid gap-[15px] [&_label]:flex [&_label]:flex-col [&_label]:gap-[7px] [&_label]:text-[11px] [&_label]:font-bold [&_input]:min-h-11.75 [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-[#e1e4e4] [&_input]:bg-white [&_input]:px-[13px] [&_input]:py-[11px] [&_input]:text-[12px] [&_input]:font-normal [&_input]:outline-none [&_input]:focus:border-brand" onSubmit={submit}>
           <label>Email address<input autoComplete="email" name="email" type="email" required maxLength={254} readOnly={step === 'reset'} value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" /></label>
           {step === 'reset' && <>
             <label>Reset code<input autoComplete="one-time-code" inputMode="numeric" name="code" required pattern="[0-9]{6}" maxLength={6} value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} placeholder="6-digit code" /></label>

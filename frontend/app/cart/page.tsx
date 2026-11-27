@@ -44,11 +44,11 @@ export default function CartPage() {
           <div className="min-w-0">
             {items.map(({ product, quantity }) => (
               <article className="grid grid-cols-[36px_100px_minmax(0,1fr)_90px] items-center gap-[17px] border-b border-line px-1 py-[18px] max-[680px]:grid-cols-[26px_72px_minmax(0,1fr)] max-[680px]:gap-[10px] max-[680px]:py-[14px]" key={product._id}>
-                <button className="grid h-7 w-7 place-items-center rounded-full bg-[#f0f1f1] text-[#515658] hover:bg-[#ffe9e4] hover:text-brand max-[680px]:h-7 max-[680px]:w-[26px]" type="button" onClick={() => void removeFromCart(product._id)} aria-label={`Remove ${product.name}`}><FiX aria-hidden="true" /></button>
-                <Image className="h-[92px] w-[100px] rounded-lg bg-soft object-cover max-[680px]:h-[70px] max-[680px]:w-[72px]" src={product.image} alt={product.name} width={110} height={100} unoptimized />
+                <button className="grid h-7 w-7 place-items-center rounded-full bg-[#f0f1f1] text-[#515658] hover:bg-[#ffe9e4] hover:text-brand max-[680px]:h-7 max-[680px]:w-6.5" type="button" onClick={() => void removeFromCart(product._id)} aria-label={`Remove ${product.name}`}><FiX aria-hidden="true" /></button>
+                <Image className="h-23 w-25 rounded-lg bg-soft object-cover max-[680px]:h-17.5 max-[680px]:w-18" src={product.image} alt={product.name} width={110} height={100} unoptimized />
                 <div className="min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_p]:mt-[3px] [&_p]:mb-[10px] [&_p]:text-[11px] [&_p]:text-muted max-[680px]:[&_h2]:text-[13px] max-[680px]:[&_p]:text-[9px]">
                   <h2>{product.name}</h2><p>{product.category} · Quality checked by our team</p>
-                  <div className="inline-flex h-[30px] items-center rounded-[5px] border border-line [&_button]:h-7 [&_button]:w-[30px] [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-muted [&_span]:min-w-7 [&_span]:text-center [&_span]:text-[11px] [&_span]:font-bold">
+                  <div className="inline-flex h-7.5 items-center rounded-[5px] border border-line [&_button]:h-7 [&_button]:w-7.5 [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-muted [&_span]:min-w-7 [&_span]:text-center [&_span]:text-[11px] [&_span]:font-bold">
                     <button type="button" onClick={() => void changeQuantity(product._id, quantity + 1)} aria-label={`Add one ${product.name}`}><FiPlus aria-hidden="true" size={14} /></button><span>{quantity}</span><button type="button" onClick={() => quantity === 1 ? void removeFromCart(product._id) : void changeQuantity(product._id, quantity - 1)} aria-label={`Remove one ${product.name}`}><FiMinus aria-hidden="true" size={14} /></button>
                   </div>
                 </div>
@@ -69,8 +69,8 @@ export default function CartPage() {
           </aside>
         </div>
       ) : (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-[#d9dddd] bg-[#fbfbfb] p-[30px] text-center">
-          <span className="grid h-[54px] w-[54px] place-items-center rounded-full bg-[#fff0ed] text-brand"><FiShoppingCart aria-hidden="true" size={24} /></span>
+        <div className="flex min-h-75 flex-col items-center justify-center rounded-xl border border-dashed border-[#d9dddd] bg-[#fbfbfb] p-[30px] text-center">
+          <span className="grid h-13.5 w-13.5 place-items-center rounded-full bg-[#fff0ed] text-brand"><FiShoppingCart aria-hidden="true" size={24} /></span>
           <h2 className="mt-[15px] mb-1 text-[21px] font-bold">Your cart is waiting for something good</h2>
           <p className="mb-5 mt-0 text-[13px] text-muted">Browse quality-tested parts selected by our automotive experts.</p>
           <Link className={cx(ui.button, ui.buttonPrimary)} href="/#products">Explore products <FiArrowUpRight aria-hidden="true" /></Link>
